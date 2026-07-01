@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena Central | O Seu Blog de Futebol</title>
+    
+    <!-- =======================================================
+         ESTILOS VISUAL (CSS) - Tudo unificado com o Desafio :hover
+         ======================================================= -->
+    <style>
+        /* Variáveis para controle de cores (Claro e Escuro) */
+        :root {
+            --bg-principal: #f4f6f8;
+            --bg-card: #ffffff;
+            --texto-principal: #1a1a1a;
+            --texto-secundario: #555555;
+            --verde-futebol: #0f2c1b;
+            --verde-destaque: #2ed573;
+            --sombra-card: rgba(0, 0, 0, 0.08);
+            --sombra-hover: rgba(0, 0, 0, 0.18);
+        }
+
+        /* Ativação automática do Modo Escuro baseado no sistema do usuário */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-principal: #121212;
+                --bg-card: #1e1e1e;
+                --texto-principal: #f4f6f8;
+                --texto-secundario: #b0b0b0;
+                --verde-futebol: #05140b;
+                --sombra-card: rgba(255, 255, 255, 0.03);
+                /* DESAFIO ACEITO: Sombra adaptada para o Modo Escuro (cinza suave/brilhante) */
+                --sombra-hover: rgba(160, 160, 160, 0.25); 
+            }
+        }
+
+        /* Configurações Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: var(--verde-futebol);
+            color: #ffffff;
+            padding: 20px 0;
+            border-bottom: 4px solid var(--verde-destaque);
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 span {
+            color: var(--verde-destaque);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: var(--verde-destaque);
+        }
+
+        /* Layout Grid */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin: 40px auto;
+        }
+
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* =======================================================
+           DESAFIO: Configuração do Card de Postagem (Article)
+           ======================================================= */
+        .post-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--sombra-card);
+            /* Transição suave para o efeito de tamanho e sombra */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+
+        /* RESOLUÇÃO DO DESAFIO: Efeito de aproximação e sombra intensa ao passar o mouse */
+        .post-card:hover {
+            transform: scale(1.02); /* Aumenta levemente o tamanho */
+            box-shadow: 0 12px 24px var(--sombra-hover); /* Intensifica a sombra de profundidade */
+        }
+
+        /* Elementos Internos do Card */
+        .post-img-container {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+        }
+
+        .post-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .post-body {
+            padding: 25px;
+        }
+
+        .tag {
+            background-color: var(--verde-destaque);
+            color: #000;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .post-body h2 {
+            margin: 15px 0 10px 0;
+        }
+
+        .post-body p {
+            color: var(--texto-secundario);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Botões de Votos (Acumulativos) */
+        .votes-section {
+            display: flex;
+            gap: 15px;
+        }
+
+        .vote-btn {
+            border: none;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .vote-btn:active {
+            transform: scale(0.92);
+        }
+
+        .like-btn {
+            background-color: #e1f5fe;
+            color: #0288d1;
+        }
+
+        .dislike-btn {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        /* Barra Lateral (Redirects) */
+        .sidebar {
+            background-color: var(--bg-card);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--sombra-card);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--verde-destaque);
+            padding-bottom: 5px;
+        }
+
+        .sidebar p {
+            font-size: 0.9rem;
+            color: var(--texto-secundario);
+            margin-bottom: 20px;
+        }
+
+        .redirect-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-box {
+            display: block;
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            text-decoration: none;
+            padding: 12px;
+            font-weight: bold;
+            border-left: 5px solid var(--verde-destaque);
+            border-radius: 0 6px 6px 0;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .link-box:hover {
+            background-color: var(--verde-futebol);
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: #000000;
+            color: #777777;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+
+        /* Responsividade Celular */
+        @media (max-width: 768px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-flex {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =======================================================
+         ESTRUTURA DA PÁGINA (HTML)
+         ======================================================= -->
+    <header>
+        <div class="container header-flex">
+            <h1>Arena<span>Central</span></h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Início</a></li>
+                    <li><a href="#">Análises</a></li>
+                    <li><a href="#">Tabelas</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container layout-grid">
+        
+        <!-- Feed de Notícias -->
+        <main class="feed">
+            
+            <!-- Post 1 -->
+            <article class="post-card">
+                <div class="post-img-container">
+                    <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop" alt="Estádio Lotado" class="post-img">
+                </div>
+                <div class="post-body">
+                    <span class="tag">Tática</span>
+                    <h2>Análise de Desempenho: Quem assume o favoritismo ao título?</h2>
+                    <p>O campeonato está pegando fogo! Com esquemas táticos mutáveis e novas contratações estreando, analisamos friamente quem tem a maior consistência para levantar a taça mais desejada do ano.</p>
+                    
+                    <!-- Sistema de Votação Acumulativa -->
+                    <div class="votes-section">
+                        <button class="vote-btn like-btn" onclick="computarVoto(this, '.like-count')">
+                            👍 Gostei (<span class="like-count">104</span>)
+                        </button>
+                        <button class="vote-btn dislike-btn" onclick="computarVoto(this, '.dislike-count')">
+                            👎 Não Gostei (<span class="dislike-count">14</span>)
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 2 -->
+            <article class="post-card">
+                <div class="post-img-container">
+                    <img src="https://images.unsplash.com/photo-1518063319789-7217e6706b04?q=80&w=1200&auto=format&fit=crop" alt="Bola de futebol na rede" class="post-img">
+                </div>
+                <div class="post-body">
+                    <span class="tag">Mercado</span>
+                    <h2>Bastidores da Janela: As maiores transações confirmadas</h2>
+                    <p>Os diretores não param de trabalhar e os cofres foram abertos nesta temporada. Reunimos uma lista interativa com os jogadores contratados que prometem mudar o patamar de suas novas equipes.</p>
+                    
+                    <!-- Sistema de Votação Acumulativa -->
+                    <div class="votes-section">
+                        <button class="vote-btn like-btn" onclick="computarVoto(this, '.like-count')">
+                            👍 Gostei (<span class="like-count">67</span>)
+                        </button>
+                        <button class="vote-btn dislike-btn" onclick="computarVoto(this, '.dislike-count')">
+                            👎 Não Gostei (<span class="dislike-count">2</span>)
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+        </main>
+
+        <!-- Barra Lateral de Redirecionamento -->
+        <aside class="sidebar">
+            <h3>Portais Esportivos</h3>
+            <p>Fique por dentro das últimas notícias em tempo real pelos maiores canais do país:</p>
+            <div class="redirect-list">
+                <a href="https://ge.globo.com" target="_blank" rel="noopener noreferrer" class="link-box">Globo Esporte (GE)</a>
+                <a href="https://www.uol.com.br/esporte/futebol/" target="_blank" rel="noopener noreferrer" class="link-box">UOL Esporte</a>
+                <a href="https://www.espn.com.br/futebol/" target="_blank" rel="noopener noreferrer" class="link-box">ESPN Brasil</a>
+                <a href="https://www.lance.com.br" target="_blank" rel="noopener noreferrer" class="link-box">LANCE!</a>
+            </div>
+        </aside>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Arena Central - Desenvolvido estritamente para o VS Code Dev</p>
+    </footer>
+
+    <!-- =======================================================
+         LÓGICA INTERATIVA (JAVASCRIPT) - Cliques Acumulativos
+         ======================================================= -->
+    <script>
+        // Função universal acumulativa: soma cliques sem travar um ao outro
+        function computarVoto(botao, classeAlvo) {
+            // Localiza a tag span correta dentro do botão acionado (.like-count ou .dislike-count)
+            const displayContagem = botao.querySelector(classeAlvo);
+            
+            // Converte o texto da tela em número inteiro
+            let contagemAtual = parseInt(displayContagem.innerText);
+            
+            // Incrementa o valor de forma acumulativa (+1 a cada clique)
+            displayContagem.innerText = contagemAtual + 1;
+        }
+    </script>
+</body>
+</html>
